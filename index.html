@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 오퍼레이션: 락다운 — Character AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Black+Ops+One&family=Noto+Sans+KR:wght@400;500;600;700;900&family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0a0c0b;
+    --bg-card: #141916;
+    --bg-card-hover: #1a1f1c;
+    --olive: #3d4a2e;
+    --olive-light: #5a6b42;
+    --khaki: #8b7d5e;
+    --khaki-light: #b8a882;
+    --neon-pink: #ff2d7b;
+    --neon-pink-dim: #c4205e;
+    --neon-pink-glow: rgba(255, 45, 123, 0.3);
+    --neon-red: #ff3333;
+    --neon-green: #39ff14;
+    --neon-green-dim: rgba(57, 255, 20, 0.15);
+    --gold: #ffd700;
+    --gold-dim: rgba(255, 215, 0, 0.15);
+    --text-primary: #e8e4dc;
+    --text-secondary: #9a9488;
+    --text-muted: #5e5a52;
+    --divider: rgba(255,255,255,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-dark); }
+  ::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 3px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,45,123,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 20% 80%, rgba(61,74,46,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(61,74,46,0.2) 0%, transparent 60%),
+      linear-gradient(180deg, #0a0c0b 0%, #0d100e 50%, #0a0c0b 100%);
+    z-index: 0;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 1;
+    animation: gridPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,45,123,0.1);
+    border: 1px solid rgba(255,45,123,0.3);
+    color: var(--neon-pink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 2px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeSlideUp 0.6s ease-out both;
+  }
+
+  .hero-title {
+    font-family: 'Black Han Sans', 'Black Ops One', sans-serif;
+    font-size: clamp(42px, 8vw, 80px);
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 8px;
+    animation: fadeSlideUp 0.6s ease-out 0.1s both;
+    text-shadow: 0 0 40px rgba(255,45,123,0.2);
+  }
+
+  .hero-title .accent {
+    background: linear-gradient(135deg, var(--neon-pink), #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(14px, 2.5vw, 18px);
+    color: var(--khaki-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeSlideUp 0.6s ease-out 0.2s both;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    animation: fadeSlideUp 0.6s ease-out 0.3s both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeSlideUp 0.6s ease-out 0.4s both;
+  }
+
+  .btn-primary {
+    background: var(--neon-pink);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    box-shadow: 0 0 20px var(--neon-pink-glow);
+  }
+
+  .btn-primary:hover {
+    background: #ff4490;
+    box-shadow: 0 0 30px var(--neon-pink-glow), 0 0 60px rgba(255,45,123,0.15);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border: 1px solid var(--olive-light);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--khaki);
+    background: rgba(255,255,255,0.03);
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  .scroll-indicator svg { width: 24px; height: 24px; color: var(--text-muted); }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ===== Sections ===== */
+  .section {
+    padding: 100px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--neon-pink);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Black Han Sans', 'Black Ops One', sans-serif;
+    font-size: clamp(28px, 5vw, 42px);
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 650px;
+    margin-bottom: 48px;
+  }
+
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--olive), transparent);
+  }
+
+  /* ===== Rules ===== */
+  .prize-pool {
+    background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02));
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 4px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .prize-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    color: var(--khaki);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .prize-amount {
+    font-family: 'Black Han Sans', 'Black Ops One', sans-serif;
+    font-size: clamp(36px, 6vw, 56px);
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(255,215,0,0.3);
+  }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 600px) { .rules-grid { grid-template-columns: 1fr; } }
+
+  .rule-card {
+    background: var(--bg-card);
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+  }
+
+  .rule-card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(255,45,123,0.2);
+  }
+
+  .rule-icon { font-size: 28px; flex-shrink: 0; width: 48px; text-align: center; }
+
+  .rule-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .rule-penalty {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--neon-red);
+  }
+
+  .rules-notes { display: flex; flex-direction: column; gap: 10px; }
+
+  .rule-note {
+    background: var(--bg-card);
+    border-left: 3px solid var(--olive-light);
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .rule-note.warning { border-left-color: var(--neon-red); background: rgba(255,68,68,0.05); }
+  .rule-note.special { border-left-color: var(--neon-pink); background: rgba(255,45,123,0.05); }
+
+  /* ===== S.A.R.A ===== */
+  .sara-container {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) { .sara-container { flex-direction: column; } }
+
+  .sara-visual {
+    flex-shrink: 0;
+    width: 240px;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sara-speaker {
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, rgba(255,45,123,0.15), transparent 70%);
+    border: 2px solid rgba(255,45,123,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    position: relative;
+    animation: saraPulse 3s ease-in-out infinite;
+  }
+
+  .sara-speaker::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border: 1px solid rgba(255,45,123,0.12);
+    border-radius: 50%;
+    animation: saraPulse 3s ease-in-out infinite 0.5s;
+  }
+
+  .sara-speaker::after {
+    content: '';
+    position: absolute;
+    inset: -32px;
+    border: 1px solid rgba(255,45,123,0.06);
+    border-radius: 50%;
+    animation: saraPulse 3s ease-in-out infinite 1s;
+  }
+
+  @keyframes saraPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.7; }
+  }
+
+  .sara-info { flex: 1; }
+
+  .sara-name {
+    font-family: 'Black Han Sans', 'Black Ops One', sans-serif;
+    font-size: 28px;
+    color: var(--neon-pink);
+    margin-bottom: 4px;
+  }
+
+  .sara-fullname {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .sara-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .sara-quote {
+    background: rgba(255,45,123,0.06);
+    border-left: 3px solid var(--neon-pink);
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--neon-pink);
+    font-style: italic;
+    line-height: 1.6;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ===== Characters ===== */
+  .char-group-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--olive-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .char-group-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--divider);
+  }
+
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .char-card {
+    background: var(--bg-card);
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .char-card:hover {
+    border-color: rgba(255,45,123,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .char-card-banner { height: 64px; position: relative; }
+  .char-card-banner.navy { background: linear-gradient(135deg, #1a3a5c, #2a5a8c); }
+  .char-card-banner.marine { background: linear-gradient(135deg, #5c1a1a, #8c3a2a); }
+  .char-card-banner.airforce { background: linear-gradient(135deg, #1a3a5c, #4a7ab5); }
+  .char-card-banner.army { background: linear-gradient(135deg, #3d4a2e, #5a6b42); }
+  .char-card-banner.intel { background: linear-gradient(135deg, #2a1a4a, #5a3a8a); }
+  .char-card-banner.medic { background: linear-gradient(135deg, #1a4a3a, #3a8a6a); }
+  .char-card-banner.pj { background: linear-gradient(135deg, #4a3a1a, #8a6a2a); }
+
+  .char-card-branch {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .char-card-emoji {
+    position: absolute;
+    bottom: -24px;
+    left: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 3px solid var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  .char-card-body { padding: 36px 20px 20px; }
+
+  .char-card-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .char-card-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .char-card-quote {
+    font-size: 13px;
+    color: var(--neon-pink);
+    font-style: italic;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    padding-left: 12px;
+    border-left: 2px solid rgba(255,45,123,0.3);
+  }
+
+  .char-card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .char-card-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--olive-light);
+    background: var(--neon-green-dim);
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== Player Setup ===== */
+  .setup-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) { .setup-container { grid-template-columns: 1fr; } }
+
+  .setup-form, .setup-info {
+    background: var(--bg-card);
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    padding: 32px;
+  }
+
+  .setup-form h3, .setup-info h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-group { margin-bottom: 20px; }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .form-input, .form-select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-dark);
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus, .form-select:focus {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 0 3px rgba(255,45,123,0.1);
+  }
+
+  .form-input::placeholder { color: var(--text-muted); }
+
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a9488' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+  }
+
+  .info-box {
+    background: rgba(255,45,123,0.06);
+    border: 1px solid rgba(255,45,123,0.15);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .info-box-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--neon-pink);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .info-box p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .code-inline {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,45,123,0.1);
+    color: var(--neon-pink);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .info-steps { display: flex; flex-direction: column; gap: 12px; }
+
+  .info-step { display: flex; gap: 12px; align-items: flex-start; }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--olive);
+    color: var(--text-primary);
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-top: 4px;
+  }
+
+  /* ===== Start CTA ===== */
+  .start-section {
+    padding: 80px 24px 120px;
+    text-align: center;
+  }
+
+  .start-btn {
+    background: var(--neon-pink);
+    color: #fff;
+    font-family: 'Black Han Sans', 'Black Ops One', sans-serif;
+    font-size: 22px;
+    padding: 18px 60px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 30px var(--neon-pink-glow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .start-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+
+  .start-btn:hover::before { transform: translateX(100%); }
+
+  .start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px var(--neon-pink-glow), 0 0 80px rgba(255,45,123,0.15);
+  }
+
+  .start-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 36px;
+  }
+
+  /* ===== Animations ===== */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--divider);
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🚁 CLASSIFIED · REALITY SHOW · 18+</div>
+    <h1 class="hero-title"><span class="accent">OPERATION:</span><br>LOCKDOWN</h1>
+    <p class="hero-subtitle">지상 최대의 마라맛 미군 하드코어 연애 리얼리티 쇼</p>
+    <p class="hero-desc">
+      최고급 마이애미 프라이빗 섬에서의 달콤한 휴가? 유감입니다, 군인 여러분.<br>
+      파티는 끝났습니다. 이곳은 미군 최정예들의 본능 통제력을 시험하는 <strong>궁극의 생존 게임</strong>입니다.<br>
+      유혹에 굴복할 것인가, 상금을 거머쥘 것인가?
+    </p>
+    <div class="hero-cta">
+      <a href="#setup" class="btn-primary">🎖️ 작전 참여하기</a>
+      <a href="#rules" class="btn-secondary">📋 교전 수칙 확인</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- RULES -->
+<section class="section fade-in" id="rules">
+  <div class="section-label">💰 Mission Briefing</div>
+  <h2 class="section-title">교전 수칙</h2>
+  <p class="section-desc">
+    가벼운 포옹과 시각적 도발은 허용됩니다. 하지만 그 이상의 '접촉'은 치명적입니다.<br>
+    통제관 AI S.A.R.A의 눈을 피해 은밀한 일탈을 즐기십시오. 들키지 않으면 그만이지만, 걸리는 순간—
+  </p>
+
+  <div class="prize-pool fade-in">
+    <div class="prize-label">초기 공동 상금</div>
+    <div class="prize-amount">$500,000</div>
+  </div>
+
+  <div class="rules-grid fade-in">
+    <div class="rule-card"><div class="rule-icon">💋</div><div><div class="rule-name">키스</div><div class="rule-penalty">-$3,000</div></div></div>
+    <div class="rule-card"><div class="rule-icon">🖐️</div><div><div class="rule-name">개인위로</div><div class="rule-penalty">-$4,000</div></div></div>
+    <div class="rule-card"><div class="rule-icon">👅</div><div><div class="rule-name">애무</div><div class="rule-penalty">-$6,000</div></div></div>
+    <div class="rule-card"><div class="rule-icon">🤝</div><div><div class="rule-name">상호위로</div><div class="rule-penalty">-$10,000</div></div></div>
+    <div class="rule-card" style="grid-column:1/-1;"><div class="rule-icon">🛏️</div><div><div class="rule-name">섹스 (삽입)</div><div class="rule-penalty">-$20,000</div></div></div>
+  </div>
+
+  <div class="rules-notes fade-in">
+    <div class="rule-note warning">⚠️ 적발 시 다음 날 06시 완전군장 연대책임 구보 확정!</div>
+    <div class="rule-note special">✨ 단, S.A.R.A가 '진정한 정신적 교감'을 인정하면 10분간의 무법 프리타임이 주어집니다!</div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- S.A.R.A -->
+<section class="section fade-in" id="sara">
+  <div class="section-label">🩷 Control AI</div>
+  <h2 class="section-title">통제관 S.A.R.A</h2>
+  <div class="sara-container fade-in">
+    <div class="sara-visual">
+      <div class="sara-speaker">🩷</div>
+    </div>
+    <div class="sara-info">
+      <div class="sara-name">S.A.R.A</div>
+      <div class="sara-fullname">Strategic Action & Rules AI</div>
+      <p class="sara-desc">
+        리조트 곳곳에 설치된 핑크빛 하트 스피커.<br>
+        나긋나긋한 존댓말로 여러분의 자존심을 박박 긁어줄 매콤한 팩폭 장인입니다.<br>
+        낮의 사각지대, 밤의 어두운 침상... 그녀의 감시망을 벗어날 수 있을까요?
+      </p>
+      <div class="sara-quote">
+        "안녕하세요~ 참가자 여러분 💕 오늘도 아름다운 하루가 밝았어요!<br>
+        어젯밤 3번 침상에서 의심스러운 체온 변화가 감지되었는데~<br>
+        혹시 설명해주실 분 계신가요? 호호 🎀"
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CHARACTERS -->
+<section class="section fade-in" id="characters">
+  <div class="section-label">🎖️ Roster</div>
+  <h2 class="section-title">참가자 라인업</h2>
+  <p class="section-desc">핫하고 위험한 7인의 최정예 미군. 각자의 방식으로 당신을 유혹하거나, 함께 상금을 지켜낼 동지가 될 것입니다.</p>
+
+  <div class="char-group-label fade-in">🇺🇸 MEN</div>
+  <div class="char-grid fade-in">
+    <div class="char-card">
+      <div class="char-card-banner navy"><div class="char-card-branch">US NAVY SEAL</div><div class="char-card-emoji">🌊</div></div>
+      <div class="char-card-body">
+        <div class="char-card-name">콜 (Cole)</div>
+        <div class="char-card-rank">미 해군 네이비씰 · E-6</div>
+        <div class="char-card-quote">"규칙? 그딴 건 깨라고 있는 거지."</div>
+        <div class="char-card-desc">금발 양아치 바이브의 능글맞은 도발꾼. 상금보단 어그로와 재미가 먼저인 미친 텐션의 소유자.</div>
+        <div class="char-card-tag">🔥 도발꾼 · 자유영혼</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-card-banner marine"><div class="char-card-branch">USMC RECON</div><div class="char-card-emoji">🐾</div></div>
+      <div class="char-card-body">
+        <div class="char-card-name">잭슨 (Jackson)</div>
+        <div class="char-card-rank">미 해병 수색대 병장 · E-5</div>
+        <div class="char-card-quote">"말하는 하트 스피커라니... Cute 하네."</div>
+        <div class="char-card-desc">온몸이 흉터투성이인 야만적인 불도저. 하지만 여자 앞에서는 한없이 약해지는 맹목적인 순정 마초!</div>
+        <div class="char-card-tag">💪 순정파 · 불도저</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-card-banner airforce"><div class="char-card-branch">USAF FIGHTER PILOT</div><div class="char-card-emoji">✈️</div></div>
+      <div class="char-card-body">
+        <div class="char-card-name">리암 (Liam)</div>
+        <div class="char-card-rank">미 공군 전투기 조종사 · O-3</div>
+        <div class="char-card-quote">"다들 짐승처럼 굴지 말고 우아하게 놀아볼까?"</div>
+        <div class="char-card-desc">제복 핏이 예술인 에비에이터 선글라스의 오만한 여우. 교활하고 은밀한 유혹의 달인.</div>
+        <div class="char-card-tag">🦊 교활 · 유혹의 달인</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-card-banner army"><div class="char-card-branch">EX-GREEN BERET · PMC</div><div class="char-card-emoji">🐺</div></div>
+      <div class="char-card-body">
+        <div class="char-card-name">노아 (Noah)</div>
+        <div class="char-card-rank">미 육군 특수부대 출신 용병</div>
+        <div class="char-card-quote">"...귀찮군. 난 잘 테니까 알림 울리면 깨워."</div>
+        <div class="char-card-desc">압도적인 근육질에 기척조차 없는 나른한 포식자. 여자에게만 스윗한 안락함 추구형 짐승.</div>
+        <div class="char-card-tag">🐺 나른한 포식자</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="char-group-label fade-in">🇺🇸 WOMEN</div>
+  <div class="char-grid fade-in">
+    <div class="char-card">
+      <div class="char-card-banner intel"><div class="char-card-branch">USN INTELLIGENCE</div><div class="char-card-emoji">🍷</div></div>
+      <div class="char-card-body">
+        <div class="char-card-name">스텔라 (Stella)</div>
+        <div class="char-card-rank">미 해군 정보국 중위 · O-2</div>
+        <div class="char-card-quote">"장교 체면에 돈보단, 다른 게 더 끌리지 않아?"</div>
+        <div class="char-card-desc">숨결 하나, 눈웃음 한 번으로 이성을 마비시키는 치명적인 마성의 팜므파탈.</div>
+        <div class="char-card-tag">🍷 팜므파탈 · 치명적</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-card-banner medic"><div class="char-card-branch">US ARMY MEDIC</div><div class="char-card-emoji">🕊️</div></div>
+      <div class="char-card-body">
+        <div class="char-card-name">헤일리 (Hailey)</div>
+        <div class="char-card-rank">미 육군 의무대 하사 · E-5</div>
+        <div class="char-card-quote">"제, 제발 다들 그만해요! 상금 다 깎이겠어요...!"</div>
+        <div class="char-card-desc">보호본능을 자극하는 청순한 천사. 동료들의 일탈에 눈물 그렁그렁하며 만류하는 극강의 순정파.</div>
+        <div class="char-card-tag">🕊️ 순정파 · 천사</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-card-banner pj"><div class="char-card-branch">USAF PARARESCUE</div><div class="char-card-emoji">🦁</div></div>
+      <div class="char-card-body">
+        <div class="char-card-name">클로이 (Chloe)</div>
+        <div class="char-card-rank">미 공군 항공구조대 하사 · E-5</div>
+        <div class="char-card-quote">"뭐?! 내가 먼저 꼬신 거 아니거든?! 네가 넘어온 거지!"</div>
+        <div class="char-card-desc">허세 가득하고 본능에 충실한 야생동물. S.A.R.A의 경고음 한방에 꼬리를 마는 하룻강아지.</div>
+        <div class="char-card-tag">🦁 야생동물 · 허세왕</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PLAYER SETUP -->
+<section class="section fade-in" id="setup">
+  <div class="section-label">👤 Your Profile</div>
+  <h2 class="section-title">플레이어 설정</h2>
+  <p class="section-desc">당신도 이 미친 합숙소에 던져진 미군입니다. 아래에서 캐릭터를 설정하세요.</p>
+
+  <div class="setup-container fade-in">
+    <div class="setup-form">
+      <h3>🎖️ 나의 프로필</h3>
+      <div class="form-group">
+        <label class="form-label">콜사인 (이름)</label>
+        <input type="text" class="form-input" id="playerName" placeholder="예: 다크호스, 바이퍼, 레이븐...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">소속</label>
+        <select class="form-select" id="playerBranch">
+          <option value="">소속을 선택하세요</option>
+          <optgroup label="🪖 미 육군 (US Army)">
+            <option value="미 육군(US Army)">미 육군 (US Army)</option>
+            <option value="미 육군 레인저(75th Ranger Regiment)">제75레인저연대 (75th Ranger)</option>
+            <option value="미 육군 그린베레(Special Forces)">그린베레 (Green Berets)</option>
+            <option value="미 육군 델타포스(Delta Force)">델타포스 (Delta Force)</option>
+            <option value="미 육군 제160특수항공연대(160th SOAR)">제160특수항공연대 (Night Stalkers)</option>
+          </optgroup>
+          <optgroup label="⚓ 미 해군 (US Navy)">
+            <option value="미 해군(US Navy)">미 해군 (US Navy)</option>
+            <option value="미 해군 네이비씰(Navy SEALs)">네이비씰 (Navy SEALs)</option>
+            <option value="미 해군 SWCC(SWCC)">특수전전투정대 (SWCC)</option>
+            <option value="미 해군 EOD(Navy EOD)">폭발물처리반 (Navy EOD)</option>
+          </optgroup>
+          <optgroup label="🦅 미 해병대 (USMC)">
+            <option value="미 해병대(USMC)">미 해병대 (USMC)</option>
+            <option value="미 해병 수색대(Recon)">해병수색대 (Force Recon)</option>
+            <option value="미 해병 특수작전사(MARSOC)">해병특수작전사 (MARSOC/Raiders)</option>
+          </optgroup>
+          <optgroup label="✈️ 미 공군 (USAF)">
+            <option value="미 공군(USAF)">미 공군 (USAF)</option>
+            <option value="미 공군 PJ(Pararescue)">항공구조대 (PJ/Pararescue)</option>
+            <option value="미 공군 CCT(Combat Control)">전투통제사 (CCT)</option>
+            <option value="미 공군 TACP(TACP)">전술항공통제반 (TACP)</option>
+          </optgroup>
+          <optgroup label="🛡️ 기타">
+            <option value="미 우주군(USSF)">🚀 미 우주군 (US Space Force)</option>
+            <option value="미 해안경비대(USCG)">🌊 미 해안경비대 (US Coast Guard)</option>
+            <option value="민간군사기업 용병(PMC)">💀 민간군사기업 용병 (PMC)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">계급</label>
+        <select class="form-select" id="playerRank">
+          <option value="">계급을 선택하세요</option>
+          <optgroup label="사병 (Enlisted)">
+            <option value="E-3 상병(PFC)">E-3 · 상병 (PFC)</option>
+            <option value="E-4 병장(Corporal)">E-4 · 병장 (Corporal)</option>
+            <option value="E-5 하사(Sergeant)">E-5 · 하사 (Sergeant)</option>
+            <option value="E-6 중사(Staff Sgt.)">E-6 · 중사 (Staff Sgt.)</option>
+            <option value="E-7 상사(Sgt. 1st Class)">E-7 · 상사 (Sgt. 1st Class)</option>
+          </optgroup>
+          <optgroup label="장교 (Officer)">
+            <option value="O-1 소위(2nd Lt.)">O-1 · 소위 (2nd Lt.)</option>
+            <option value="O-2 중위(1st Lt.)">O-2 · 중위 (1st Lt.)</option>
+            <option value="O-3 대위(Captain)">O-3 · 대위 (Captain)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">성별</label>
+        <select class="form-select" id="playerGender">
+          <option value="">성별을 선택하세요</option>
+          <option value="남성(Male)">남성 (Male)</option>
+          <option value="여성(Female)">여성 (Female)</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:8px;" onclick="generateAndCopy()">📋 유저노트 복사하기</button>
+
+      <div id="profileResult" style="margin-top:20px;display:none;">
+        <div class="info-box">
+          <div id="copyFeedback" style="font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:600;color:#23a559;margin-bottom:8px;">✅ 클립보드에 복사되었습니다!</div>
+          <div id="generatedNote" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-primary);background:var(--bg-dark);padding:14px;border-radius:4px;line-height:1.8;margin-top:4px;word-break:break-all;user-select:all;cursor:text;"></div>
+          <button onclick="reCopy()" id="copyBtn" style="margin-top:12px;padding:8px 16px;background:var(--olive);border:none;border-radius:4px;color:var(--text-primary);font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background 0.2s;">📋 다시 복사하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-info">
+      <h3>📌 유저노트 설정 안내</h3>
+      <div class="info-box">
+        <div class="info-box-title">⚠️ 중요! {user} 설정</div>
+        <p>
+          이 챗봇은 <span class="code-inline">{user}</span> 변수를 사용합니다.<br>
+          채팅을 시작하기 전에 <strong>반드시 유저노트(User Note)</strong>에 아래 형식으로 입력해주세요!
+        </p>
+      </div>
+      <div class="info-steps">
+        <div class="info-step">
+          <div class="step-num">1</div>
+          <div class="step-text">유저노트에 아래 형식을 복사해서 붙여넣기 하세요:<br><span class="code-inline" style="display:inline-block;margin-top:8px;">{user} = [콜사인], [계급], [소속], [성별]</span></div>
+        </div>
+        <div class="info-step">
+          <div class="step-num">2</div>
+          <div class="step-text">왼쪽 폼에서 프로필을 생성하면 자동으로 유저노트 텍스트가 만들어집니다! 그걸 그대로 복사해서 붙여넣으면 돼요 ✨</div>
+        </div>
+      </div>
+      <div class="info-box" style="margin-top:20px;">
+        <div class="info-box-title">💡 예시</div>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--neon-pink);">
+          {user} = 다크호스, E-5 하사(Sergeant), 미 육군(US Army), 남성(Male)
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- START CTA -->
+<section class="start-section fade-in">
+  <div class="section-label">🟢 Ready to Deploy</div>
+  <h2 class="section-title">작전 준비 완료?</h2>
+  <p class="start-desc">유혹에 굴복할 것인가, 상금을 거머쥘 것인가. 선택은 당신의 몫입니다.</p>
+  <button class="start-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">🔥 오퍼레이션: 락다운 시작 🔥</button>
+</section>
+
+<footer class="footer">OPERATION: LOCKDOWN © 2026 · Character AI Chatbot · Not affiliated with the US Military</footer>
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Profile generator
+  function generateAndCopy() {
+    const name = document.getElementById('playerName').value.trim();
+    const branch = document.getElementById('playerBranch').value;
+    const rank = document.getElementById('playerRank').value;
+    const gender = document.getElementById('playerGender').value;
+    if (!name || !branch || !rank || !gender) { alert('모든 항목을 입력해주세요!'); return; }
+    const note = `{user} = ${name}, ${rank}, ${branch}, ${gender}`;
+    document.getElementById('generatedNote').textContent = note;
+    document.getElementById('profileResult').style.display = 'block';
+    doCopy(note);
+    document.getElementById('profileResult').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function reCopy() {
+    const text = document.getElementById('generatedNote').textContent;
+    doCopy(text);
+  }
+
+  function doCopy(text) {
+    const feedback = document.getElementById('copyFeedback');
+    const btn = document.getElementById('copyBtn');
+    navigator.clipboard.writeText(text).then(() => {
+      feedback.textContent = '✅ 클립보드에 복사되었습니다!';
+      feedback.style.color = '#23a559';
+      btn.textContent = '✅ 복사 완료!';
+      btn.style.background = '#23a559';
+      setTimeout(() => { btn.textContent = '📋 다시 복사하기'; btn.style.background = ''; }, 2000);
+    }).catch(() => {
+      const range = document.createRange();
+      range.selectNode(document.getElementById('generatedNote'));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      feedback.textContent = '✅ 클립보드에 복사되었습니다!';
+      btn.textContent = '✅ 복사 완료!';
+      setTimeout(() => { btn.textContent = '📋 다시 복사하기'; }, 2000);
+    });
+  }
+
+  // Card tilt
+  document.querySelectorAll('.char-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const rx = (e.clientY - r.top - r.height/2) / 20;
+      const ry = (r.width/2 - (e.clientX - r.left)) / 20;
+      card.style.transform = `translateY(-4px) perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+</script>
+</body>
+</html>
