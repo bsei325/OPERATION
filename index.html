@@ -63,13 +63,15 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
 
-  body {
+ body {
     font-family: 'Noto Sans KR', sans-serif;
     background: var(--bg-dark);
     color: var(--text-primary);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-  }
+    word-break: keep-all;       /* ← 추가! */
+    overflow-wrap: break-word;  /* ← 추가! */
+}
 
   body::before {
     content: '';
@@ -182,6 +184,7 @@
     text-transform: uppercase;
     margin-bottom: 32px;
     animation: fadeSlideUp 0.6s ease-out 0.2s both;
+     white-space: nowrap;
   }
 
   .hero-desc {
