@@ -63,15 +63,13 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
 
- body {
+  body {
     font-family: 'Noto Sans KR', sans-serif;
     background: var(--bg-dark);
     color: var(--text-primary);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    word-break: keep-all;       /* ← 추가! */
-    overflow-wrap: break-word;  /* ← 추가! */
-}
+  }
 
   body::before {
     content: '';
@@ -184,7 +182,6 @@
     text-transform: uppercase;
     margin-bottom: 32px;
     animation: fadeSlideUp 0.6s ease-out 0.2s both;
-     white-space: nowrap;
   }
 
   .hero-desc {
@@ -1044,6 +1041,38 @@
           <option value="여성(Female)">여성 (Female)</option>
         </select>
       </div>
+      <div class="form-group">
+        <label class="form-label">보직 / 특기 (MOS)</label>
+        <select class="form-select" id="playerMOS">
+          <option value="">보직을 선택하세요</option>
+          <optgroup label="🔫 전투">
+            <option value="보병(Infantry)">보병 (Infantry)</option>
+            <option value="저격수(Sniper)">🎯 저격수 (Sniper)</option>
+            <option value="기갑병(Armor/Tank Crew)">🪖 기갑병 (Armor/Tank Crew)</option>
+            <option value="포병(Artillery)">💥 포병 (Artillery)</option>
+            <option value="전투공병(Combat Engineer)">⚒️ 전투공병 (Combat Engineer)</option>
+          </optgroup>
+          <optgroup label="🎖️ 특수작전">
+            <option value="특수작전요원(Special Operator)">특수작전요원 (Special Operator)</option>
+            <option value="정찰/수색(Reconnaissance)">🔭 정찰/수색 (Reconnaissance)</option>
+            <option value="전투잠수부(Combat Diver)">🤿 전투잠수부 (Combat Diver)</option>
+            <option value="공수/강하작전(Airborne)">🪂 공수/강하작전 (Airborne)</option>
+          </optgroup>
+          <optgroup label="🛡️ 지원">
+            <option value="의무병/전투위생병(Combat Medic)">🩺 의무병 (Combat Medic)</option>
+            <option value="통신병(Signal/Comms)">📡 통신병 (Signal/Comms)</option>
+            <option value="정보분석관(Intelligence Analyst)">🧠 정보분석관 (Intelligence Analyst)</option>
+            <option value="폭발물처리(EOD)">💣 폭발물처리 (EOD)</option>
+            <option value="군견병(K-9 Handler)">🐕 군견병 (K-9 Handler)</option>
+          </optgroup>
+          <optgroup label="✈️ 항공/기술">
+            <option value="전투기조종사(Fighter Pilot)">✈️ 전투기조종사 (Fighter Pilot)</option>
+            <option value="헬기조종사(Helicopter Pilot)">🚁 헬기조종사 (Helicopter Pilot)</option>
+            <option value="항공구조사(Pararescue/PJ)">🪂 항공구조사 (PJ)</option>
+            <option value="정비사(Mechanic/Technician)">🔧 정비사 (Mechanic)</option>
+          </optgroup>
+        </select>
+      </div>
       <button class="btn-primary" style="width:100%;margin-top:8px;" onclick="generateAndCopy()">📋 유저노트 복사하기</button>
 
       <div id="profileResult" style="margin-top:20px;display:none;">
@@ -1067,7 +1096,7 @@
       <div class="info-steps">
         <div class="info-step">
           <div class="step-num">1</div>
-          <div class="step-text">유저노트에 아래 형식을 복사해서 붙여넣기 하세요:<br><span class="code-inline" style="display:inline-block;margin-top:8px;">{user} = [콜사인], [계급], [소속], [성별]</span></div>
+          <div class="step-text">유저노트에 아래 형식을 복사해서 붙여넣기 하세요:<br><span class="code-inline" style="display:inline-block;margin-top:8px;">{user} = [콜사인], [계급], [소속], [보직], [성별]</span></div>
         </div>
         <div class="info-step">
           <div class="step-num">2</div>
@@ -1077,7 +1106,7 @@
       <div class="info-box" style="margin-top:20px;">
         <div class="info-box-title">💡 예시</div>
         <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--neon-pink);">
-          {user} = 다크호스, E-5 하사(Sergeant), 미 육군(US Army), 남성(Male)
+          {user} = 다크호스, E-5 하사(Sergeant), 미 육군(US Army), 저격수(Sniper), 남성(Male)
         </p>
       </div>
     </div>
@@ -1109,8 +1138,9 @@
     const branch = document.getElementById('playerBranch').value;
     const rank = document.getElementById('playerRank').value;
     const gender = document.getElementById('playerGender').value;
-    if (!name || !branch || !rank || !gender) { alert('모든 항목을 입력해주세요!'); return; }
-    const note = `{user} = ${name}, ${rank}, ${branch}, ${gender}`;
+    const mos = document.getElementById('playerMOS').value;
+    if (!name || !branch || !rank || !gender || !mos) { alert('모든 항목을 입력해주세요!'); return; }
+    const note = `{user} = ${name}, ${rank}, ${branch}, ${mos}, ${gender}`;
     document.getElementById('generatedNote').textContent = note;
     document.getElementById('profileResult').style.display = 'block';
     doCopy(note);
