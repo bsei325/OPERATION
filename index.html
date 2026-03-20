@@ -739,7 +739,7 @@
     background: var(--neon-pink);
     color: #fff;
     font-family: 'Black Han Sans', 'Black Ops One', sans-serif;
-    font-size: 22px;
+    font-size: clamp(16px, 4vw, 22px);
     padding: 18px 60px;
     border: none;
     border-radius: 4px;
@@ -748,6 +748,7 @@
     box-shadow: 0 0 30px var(--neon-pink-glow);
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
   }
 
   .start-btn::before {
