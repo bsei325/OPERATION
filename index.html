@@ -69,6 +69,8 @@
     color: var(--text-primary);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   body::before {
@@ -176,12 +178,13 @@
 
   .hero-subtitle {
     font-family: 'Oswald', sans-serif;
-    font-size: clamp(14px, 2.5vw, 18px);
+    font-size: clamp(11px, 2.5vw, 18px);
     color: var(--khaki-light);
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 32px;
     animation: fadeSlideUp 0.6s ease-out 0.2s both;
+    white-space: nowrap;
   }
 
   .hero-desc {
